@@ -4,6 +4,5 @@ public record Furniture (
         int itemNumber,
         String item,
         String name,
-        double weight
-){
+        double weight){
 }
