@@ -13,13 +13,17 @@ import java.sql.SQLException;
 public class RowMapper {
 
     public static Order orderMappingToObject(ResultSet rs, int i) throws SQLException {
-        return new Order(
-                rs.getInt("order_id"),
-                rs.getInt("customer_id"),
-                rs.getInt("product_id"),
-                rs.getDate("order_date").toLocalDate(),
-                rs.getInt("quantity"),
-                rs.getDouble("discount"));
+        try {
+            return new Order(
+                    rs.getInt("order_id"),
+                    rs.getInt("customer_id"),
+                    rs.getInt("product_id"),
+                    rs.getDate("order_date").toLocalDate(),
+                    rs.getInt("quantity"),
+                    rs.getDouble("discount"));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error mapping Order from ResultSet: " + e.getMessage());
+        }
     }
 
     public static Product productMappingToObject(ResultSet rs, int i) throws SQLException {
