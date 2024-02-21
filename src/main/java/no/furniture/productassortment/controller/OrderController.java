@@ -3,7 +3,6 @@ package no.furniture.productassortment.controller;
 
 import no.furniture.productassortment.model.CustomProductOrder;
 import no.furniture.productassortment.model.CustomerOrder;
-
 import no.furniture.productassortment.model.Order;
 import no.furniture.productassortment.service.OrderService;
 import org.springframework.http.HttpStatus;
@@ -29,7 +28,7 @@ public class OrderController {
             @PathVariable int customerID,
             @PathVariable int product_ID,
             @RequestBody CustomerOrder customerOrder
-    ){
+    ) throws Exception {
 
         String order = orderService.createOrder(customerID, product_ID, customerOrder);
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
@@ -37,14 +36,14 @@ public class OrderController {
 
 
     @GetMapping
-    public ResponseEntity<List<Order>> getAllOrders(){
+    public ResponseEntity<List<Order>> getAllOrders() {
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
 
-    @GetMapping("{orderID}")
+    @GetMapping("/{orderID}")
     public ResponseEntity<CustomProductOrder> getOrder(
-            @PathVariable int orderID){
+            @PathVariable int orderID) {
         return ResponseEntity.ok(orderService.getOrderById(orderID));
     }
 }

@@ -22,8 +22,17 @@ public class OrderService {
         requireNonNull(orderId, "cannot be null");
 
         Order order = databaseRepository.getOrderById(orderId);
+        if (order == null) {
+            throw new RuntimeException("Order not found for ID: " + orderId);
+        }
         Customer customer = databaseRepository.getCustomer(order.customerID());
+        if (customer == null) {
+            throw new RuntimeException("Customer not found for ID: " + order.customerID());
+        }
         Product product = databaseRepository.getProduct(order.productID());
+        if (product == null) {
+            throw new RuntimeException("Product not found for ID: " + order.productID());
+        }
         CustomProductOrder customProductOrder = new CustomProductOrder(
                 order.customerID(),
                 customer.name(),
@@ -38,23 +47,34 @@ public class OrderService {
         requireNonNull(customerID, "customerID be null");
         requireNonNull(productId, "productId be null");
 
-        try {
-            Product product = databaseRepository.getProduct(productId);
-            Customer customer = databaseRepository.getCustomer(customerID);
-            if (!customer.isMember()) {
-                throw new RuntimeException("Customer cannot get a discount is not a member in the startup. Check customer Data first");
-            }
-            double discountPrice = product.price() * ((percentage - customerOrder.discount()) / percentage);
 
-            databaseRepository.createOrder(customerID, productId, discountPrice, product, customerOrder);
-
-            return "created Order";
-        } catch (Exception exception) {
-            throw new RuntimeException("Could not create order." + exception);
+        Product product = databaseRepository.getProduct(productId);
+        if (product == null) {
+            throw new RuntimeException("Product not found for ID: " + productId);
         }
+        Customer customer = databaseRepository.getCustomer(customerID);
+        if (customer == null) {
+            throw new RuntimeException("Customer not found for ID: " + customerID);
+        }
+        if (!customer.isMember()) {
+            throw new RuntimeException("Customer cannot get a discount is not a member in the startup. Check customer Data first.");
+        }
+
+        double discountPrice = calculateDiscountedPrice(product.price(), customerOrder.discount());
+
+        databaseRepository.createOrder(customerID, productId, discountPrice, product, customerOrder);
+
+        return "created Order";
+
     }
 
     public List<Order> getAllOrders() {
         return databaseRepository.getAllOrder();
+    }
+
+
+    private double calculateDiscountedPrice(double price, double discountPercentage) {
+        final int percentage = 100;
+        return price * ((percentage - discountPercentage) / percentage);
     }
 }
