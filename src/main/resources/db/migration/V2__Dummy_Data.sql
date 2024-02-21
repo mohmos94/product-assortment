@@ -1,36 +1,31 @@
--- Inserting dummy data into the furniture table
-INSERT INTO furniture (item, name, weight) VALUES
-('Chair', 'Wooden Chair', 15.5),
-('Table', 'Coffee Table', 25.0),
-('Bookshelf', 'Tall Bookshelf', 35.8);
+INSERT INTO furniture (itemNumber, item, name, weight) VALUES
+(1, 'Chair', 'Wooden Chair', 15.5),
+(2, 'Table', 'Coffee Table', 25.0),
+(3, 'Bookshelf', 'Tall Bookshelf', 35.8);
 
--- Inserting dummy data into the hot_dogs table
 INSERT INTO hot_dogs (flavor) VALUES
 ('Beef'),
 ('Pork'),
 ('Chicken'),
 ('Vegetarian');
 
--- Inserting dummy data into the textile table
-INSERT INTO textile (item, name, color) VALUES
-('Towel', 'Bath Towel', 'Blue'),
-('Curtains', 'Bedroom Curtains', 'Red'),
-('Blanket', 'Wool Blanket', 'Green');
+INSERT INTO textile (itemNumber, item, name, color) VALUES
+(4, 'Towel', 'Bath Towel', 'Blue'),
+(5, 'Curtains', 'Bedroom Curtains', 'Red'),
+(6, 'Blanket', 'Wool Blanket', 'Green');
 
--- Inserting dummy data into the customer table
+-- Dummy data for customer table
 INSERT INTO customer (name, is_member) VALUES
 ('John Doe', true),
 ('Jane Smith', false),
 ('Bob Johnson', true);
 
--- Inserting dummy data into the product table
-INSERT INTO product (name, price, description) VALUES
-('T-Shirt', 20.00, 'Cotton T-Shirt'),
-('Jeans', 50.00, 'Denim Jeans'),
-('Sneakers', 80.00, 'Running Shoes');
+INSERT INTO product (id, name, category, price, description) VALUES
+(1, 'Chair', 'Furniture', 50.00, 'Comfortable wooden chair'),
+(2, 'Towel', 'Textile', 10.00, 'Soft bath towel'),
+(3, 'Hot Dog', 'Hot Dogs', 5.00, 'Delicious hot dog'),
+(4, 'Table', 'Furniture', 100.00, 'Sturdy coffee table'),
+(5, 'Curtains', 'Textile', 30.00, 'Beautiful bedroom curtains'),
+(6, 'Blanket', 'Textile', 20.00, 'Warm wool blanket'),
+(7, 'Bookshelf', 'Furniture', 80.00, 'Elegant tall bookshelf');
 
--- Inserting dummy data into the customer_product_discount table
-INSERT INTO customer_product_discount (customer_id, product_id, discount) VALUES
-(1, 1, 0.10), -- John Doe gets a 10% discount on T-Shirts
-(1, 3, 0.05), -- John Doe gets a 5% discount on Sneakers
-(2, 2, 0.15); -- Jane Smith gets a 15% discount on Jeans

@@ -1,8 +1,9 @@
 package no.furniture.productassortment.model;
 
 public record Product(
-        int id,
+        int productID,
+        String category,
+        String name,
         int price,
-        String description
-) {
+        String description) {
 }

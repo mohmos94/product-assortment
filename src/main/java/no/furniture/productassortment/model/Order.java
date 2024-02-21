@@ -1,9 +1,18 @@
 package no.furniture.productassortment.model;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Date;
+
 
 public record Order(
-        Long id,
-        List<Product> products,
-        List<Discount> discounts) {
+        int orderID,
+        int customerID,
+         int productID,
+         LocalDate localDate,
+         int quantity,
+         double discount
+){
+
+
+
 }

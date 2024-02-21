@@ -1,9 +1,11 @@
 package no.furniture.productassortment.model;
 
 public record Discount(
-        int id,
-         Category category,
-         double percentage
+        String customerName,
+        String Category,
+        String productName,
 
-) {
+        double fullPrice,
+        double percentage,
+        double discountedPrice) {
 }
