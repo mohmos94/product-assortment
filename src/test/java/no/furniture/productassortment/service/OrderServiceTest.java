@@ -107,18 +107,20 @@ class OrderServiceTest {
     }
 
     @Test
-    void createOrderShouldFailIFCustomerIsNotMember()  {
+    void createOrderShouldNotGetAnyDiscountSinceCustomerIsNotMember()  {
         int orderId = 1;
+        String orderCreated = "created Order customer is not getting anny discount";
         Customer customer = new Customer(1, "mosti", false);
         Product product = new Product(1, "Furniture", "bed", 100, "nicee looking bed");
-        CustomerOrder customerOrder = new CustomerOrder(2, 10);
+        CustomerOrder customerOrder = new CustomerOrder(2, 0d);
 
+        double discountedPrice = customerOrder.discount();
         when(databaseRepository.getCustomer(orderId)).thenReturn(customer);
         when(databaseRepository.getProduct(orderId)).thenReturn(product);
+        when(databaseRepository.createOrder(customer.id(), product.productID(), discountedPrice, product, customerOrder)).thenReturn(orderCreated);
 
-        assertThatThrownBy(() -> {
-            orderService.createOrder(customer.id(), product.productID(), customerOrder);
-        }).isInstanceOf(RuntimeException.class).hasMessage("Customer cannot get a discount is not a member in the startup. Check customer Data first.");
+        String createOrder = orderService.createOrder(customer.id(), product.productID(), customerOrder);
+        assertEquals(orderCreated, createOrder);
     }
 
 

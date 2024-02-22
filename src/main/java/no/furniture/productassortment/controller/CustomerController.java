@@ -1,6 +1,7 @@
 package no.furniture.productassortment.controller;
 
 
+import no.furniture.productassortment.model.Customer;
 import no.furniture.productassortment.service.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,8 @@ public class CustomerController {
     }
 
 
-    @GetMapping("{customerID}")
-    public ResponseEntity getOrder(
+    @GetMapping("/{customerID}")
+    public ResponseEntity<Customer> getCustomer(
             @PathVariable int customerID){
         return ResponseEntity.ok(customerService.getOrderById(customerID));
     }
