@@ -47,7 +47,7 @@ public class OrderService {
     }
 
     public String createOrder(int customerID, int productId, CustomerOrder customerOrder) {
-        double discountPrice = 0;
+        double discountPrice = 0d;
 
 
         Product product = databaseRepository.getProduct(productId);

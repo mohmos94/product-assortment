@@ -72,7 +72,7 @@ public class OrderController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully fetched order.",
                     content = @Content(schema = @Schema(implementation = CustomProductOrder.class))),
-            @ApiResponse(responseCode = "400", description = "Failed to find order.",
+            @ApiResponse(responseCode = "500", description = "Failed to find order.",
                     content = @Content(schema = @Schema(implementation = SimpleErrorResponse.class)))
     })
     @GetMapping("/{orderID}")

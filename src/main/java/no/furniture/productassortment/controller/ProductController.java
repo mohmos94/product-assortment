@@ -1,6 +1,7 @@
 package no.furniture.productassortment.controller;
 
 
+import no.furniture.productassortment.model.Product;
 import no.furniture.productassortment.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +19,8 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("{productID}")
-    public ResponseEntity getOrder(
+    @GetMapping("/{productID}")
+    public ResponseEntity<Product> getProduct(
             @PathVariable int productID){
         return ResponseEntity.ok(productService.getProductByID(productID));
     }
