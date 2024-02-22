@@ -1,5 +1,7 @@
 package no.furniture.productassortment.service;
 
+import no.furniture.productassortment.exception.NotFoundException;
+import no.furniture.productassortment.exception.NotMemberException;
 import no.furniture.productassortment.model.*;
 import no.furniture.productassortment.repository.DatabaseRepository;
 import org.springframework.stereotype.Service;
@@ -19,19 +21,20 @@ public class OrderService {
     }
 
     public CustomProductOrder getOrderById(int orderId) {
+
         requireNonNull(orderId, "cannot be null");
 
         Order order = databaseRepository.getOrderById(orderId);
         if (order == null) {
-            throw new RuntimeException("Order not found for ID: " + orderId);
+            throw new NotFoundException("Order not found for ID: " + orderId);
         }
         Customer customer = databaseRepository.getCustomer(order.customerID());
         if (customer == null) {
-            throw new RuntimeException("Customer not found for ID: " + order.customerID());
+            throw new NotFoundException("Customer not found for ID: " + order.customerID());
         }
         Product product = databaseRepository.getProduct(order.productID());
         if (product == null) {
-            throw new RuntimeException("Product not found for ID: " + order.productID());
+            throw new NotFoundException("Product not found for ID: " + order.productID());
         }
         CustomProductOrder customProductOrder = new CustomProductOrder(
                 order.customerID(),
@@ -44,8 +47,7 @@ public class OrderService {
     }
 
     public String createOrder(int customerID, int productId, CustomerOrder customerOrder) {
-        requireNonNull(customerID, "customerID be null");
-        requireNonNull(productId, "productId be null");
+        double discountPrice = 0;
 
 
         Product product = databaseRepository.getProduct(productId);
@@ -54,18 +56,17 @@ public class OrderService {
         }
         Customer customer = databaseRepository.getCustomer(customerID);
         if (customer == null) {
-            throw new RuntimeException("Customer not found for ID: " + customerID);
+            throw new NotFoundException("Customer not found for ID: " + customerID);
         }
         if (!customer.isMember()) {
-            throw new RuntimeException("Customer cannot get a discount is not a member in the startup. Check customer Data first.");
+            databaseRepository.createOrder(customerID, productId, discountPrice, product, customerOrder);
+            return "created Order customer is not getting anny discount";
+        } else {
+            discountPrice = calculateDiscountedPrice(product.price(), customerOrder.discount());
+            databaseRepository.createOrder(customerID, productId, discountPrice, product, customerOrder);
+            return "created Order";
+
         }
-
-        double discountPrice = calculateDiscountedPrice(product.price(), customerOrder.discount());
-
-        databaseRepository.createOrder(customerID, productId, discountPrice, product, customerOrder);
-
-        return "created Order";
-
     }
 
     public List<Order> getAllOrders() {
